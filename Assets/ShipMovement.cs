@@ -10,6 +10,7 @@ public class ShipMovement : MonoBehaviour
     public float speed_s = 5f;
     Rigidbody2D rb;
     Vector2 to_add;
+    [SerializeField] float sidewaysDragmMltiplier; //how fast do you want your object to slow down
     // Start is called before the first frame update
     void Start()
     {
@@ -52,9 +53,17 @@ public class ShipMovement : MonoBehaviour
         this.transform.Rotate(Vector3.forward *  Wheel.transform.rotation.z * TurnSpeed * Time.deltaTime);
     }
 
+    void Stabilize()
+    {
+        Vector3 velocity = transform.InverseTransformDirection(rb.velocity);
+        rb.AddForce(transform.right * -velocity.x * sidewaysDragmMltiplier);
+
+    }
+
     void FixedUpdate()
     {
         rb.AddForce(to_add);
         RotateShip();
+        Stabilize();
     }
 }

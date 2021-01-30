@@ -11,18 +11,21 @@ public class DeleteWithMask2 : MonoBehaviour
 
     [Header("- - - Variables - - -")]
 
-    [SerializeField] float delay;
+    private float delayStart;
+    [SerializeField] float maskCD;
 
     // Start is called before the first frame update
     void Start()
     {
+        delayStart = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("Space"))
+        if ( Time.time > delayStart + maskCD)
         {
+            delayStart = Time.time;
             spawnMask();
         }
     }
