@@ -6,15 +6,14 @@ public class PingAnimation : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
     private float disappearTimer = 0f;
-    private float disappearTimerMax = 1f;
+    [SerializeField] private float disappearTimerMax = 1.5f;
     [SerializeField] Color color = new Color(0, 1, 0, 0f);
-    // Start is called before the first frame update
+
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         disappearTimer += Time.deltaTime;
