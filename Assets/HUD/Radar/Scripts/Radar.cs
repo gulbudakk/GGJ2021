@@ -9,7 +9,7 @@ public class Radar : MonoBehaviour
     [SerializeField] private LayerMask radarLayerMask;
     private Transform sweepTransform;
     public float rotationSpeed = 180f;
-    private float radarDistance = 20f;
+    private float radarDistance = 100f;
     private List<Collider2D> colliderList;
 
     // Start is called before the first frame update

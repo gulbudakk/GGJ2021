@@ -28,15 +28,15 @@ public class IceResist : MonoBehaviour
 
     void FixedUpdate()
     {
-        ship_point = m_NewTransform.position;
-        if (thisCollider.bounds.Contains(ship_point))
-        {
-            StateScript.ShipInIce = true;
-        }
-        else
-        {
-            StateScript.ShipInIce = false;
-        }
+        //ship_point = m_NewTransform.position;
+        //if (thisCollider.bounds.Contains(ship_point))
+        //{
+        //    StateScript.ShipInIce = true;
+        //}
+        //else
+        //{
+        //    StateScript.ShipInIce = false;
+        //}
 
         if (StateScript.ShipInIce)
         {
@@ -44,7 +44,7 @@ public class IceResist : MonoBehaviour
         }
     }
 
-    void applyResist()
+    public void applyResist()
     {
         var rb = StateScript.Ship.GetComponent<Rigidbody2D>();
         v = rb.velocity.magnitude;

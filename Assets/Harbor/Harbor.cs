@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class Harbor : MonoBehaviour
 {
-    [SerializeField] Rigidbody2D PlayerRB;
+    [SerializeField] GameObject player;
     [SerializeField] Radio radioScript;
+    public bool inHarbor;
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        if (radioScript.isAttached)
-        {
-            Destroy(GameObject.FindGameObjectWithTag("Rescue"));
-            radioScript.isMissonActive = false;
-            radioScript.isAttached = false;
-        }
-        
+        inHarbor = true;
+    }
+
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        inHarbor = false;
     }
 }

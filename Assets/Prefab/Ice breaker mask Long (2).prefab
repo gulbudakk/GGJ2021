@@ -172,12 +172,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2231602465405015756}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ddb982a06bf541a40a171da024a68b6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isActive: 0
   maxRange: 1
   maskReplacementObj: {fileID: 3761649930840142076, guid: da9f65404f3d7b54ca551c7bdc5d68a1,
     type: 3}

@@ -7,11 +7,14 @@ public class ShipMovement : MonoBehaviour
     public GameObject Wheel;
     public GameObject Trust;
     public int TurnSpeed=10;
-
+    float x;
+    public GameObject ForcePos;
     public float reverse = 1f;
     public float foward = 1f;
-
+    public GameObject Reference;
     public float degree;
+    float inital_y;
+    public bool reverse_button = false;
     Rigidbody2D rb;
     Vector2 to_add;
     [SerializeField] float sidewaysDragmMltiplier; //how fast do you want your object to slow down
@@ -21,31 +24,84 @@ public class ShipMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
+
+
     // Update is called once per frame
     void Update()
     {
+
         var localVelocity = transform.InverseTransformDirection(rb.velocity);
         var forwardSpeed = localVelocity.y;
-        if(forwardSpeed > Trust.transform.position.y)//slow down
-        {
-            to_add = new Vector2(-transform.up.x * reverse, -transform.up.y * reverse);
-        }
-        else if (forwardSpeed < Trust.transform.position.y)//get faster
-        {
-            to_add = new Vector2(transform.up.x * foward, transform.up.y * foward);
+
+        x = Reference.transform.position.y - 30;
+        //Debug.Log(x);
+        //Debug.Log(reverse_button);
+
+        float maxspeed = x / 30;
+        if (!reverse_button) 
+        { 
+            maxspeed = x / 30;
+            if (forwardSpeed < maxspeed)
+            {
+                to_add = new Vector2(transform.up.x * foward, transform.up.y * foward);//get faster
+            }
+            //else if (forwardSpeed > maxspeed)
+            //{
+            //    to_add = new Vector2(-transform.up.x * reverse, -transform.up.y * reverse);//slow down
+            //}
+            else
+            {
+                to_add = new Vector2(0, 0);
+            }
         }
         else
         {
-            if(Trust.transform.position.y < 0) //slow down
+            Debug.Log("xd");
+            maxspeed = -x / 60;
+            if (forwardSpeed > maxspeed)
             {
-                to_add = new Vector2(-transform.up.x * reverse, -transform.up.y * reverse);
+                to_add = new Vector2(0.5f *-transform.up.x * reverse, 0.5f * -transform.up.y * reverse);//get faster
+                Debug.Log("xd");
             }
-            else if (Trust.transform.position.y > 0)//get faster
+            //else if (forwardSpeed > maxspeed)
+            //{
+            //    to_add = new Vector2(0.5f * transform.up.x * foward, 0.5f * transform.up.y * foward);//slow down
+            //}
+            else
             {
-                to_add = new Vector2(transform.up.x * foward, transform.up.y * foward);
+                to_add = new Vector2(0, 0);
             }
         }
-    }
+
+        //if (!reverse_button)
+        //{
+        //    if (forwardSpeed > x)//slow down
+        //    {
+        //        to_add = new Vector2(-transform.up.x * reverse, -transform.up.y * reverse);
+        //    }
+        //    else if (forwardSpeed < x)//get faster
+        //    {
+        //        to_add = new Vector2(transform.up.x * foward, transform.up.y * foward);
+        //    }
+        //    else
+        //    {
+        //        if (x > 0)//get faster
+        //        {
+        //            to_add = new Vector2(transform.up.x * foward, transform.up.y * foward);
+        //        }
+        //    }
+        //}
+        //else
+        //{
+        //    if (x < 0) //slow down
+        //    {
+        //        to_add = new Vector2(-transform.up.x * reverse, -transform.up.y * reverse);
+        //    }
+        //}
+    }   
+
+
+    
 
     void RotateShip() 
     {
@@ -88,8 +144,7 @@ public class ShipMovement : MonoBehaviour
             {
                 degree = 2 + -rotationSide;
             }
-        }       
-
+        }
         this.transform.Rotate(Vector3.forward * degree * TurnSpeed * Time.deltaTime * turnSpeedAcoringTOSpeed);
     }
 
@@ -98,23 +153,26 @@ public class ShipMovement : MonoBehaviour
         //Vector3 velocity = transform.InverseTransformDirection(rb.velocity);
         //rb.AddForce(transform.right * -velocity.x * sidewaysDragmMltiplier);
 
-        Vector2 stabilizer = new Vector2(0.5f*-rb.velocity.x, 0.5f*-rb.velocity.y);
-        rb.AddForce(stabilizer);
+        var localVelocity = transform.InverseTransformDirection(rb.velocity);
+        float forwardSpeed = localVelocity.y;
+        if (forwardSpeed < 0.15 && x==0 && forwardSpeed > -0.15)
+        {
+            rb.velocity = new Vector2(0, 0);
+        }
+        else
+        {
+            Vector2 stabilizer = new Vector2(0.5f * -rb.velocity.x, 0.5f * -rb.velocity.y);
+            rb.AddForce(stabilizer);
+        }
+        
     }
 
     void FixedUpdate()
     {
-        //rb.AddForce(to_add);
-        rb.AddForceAtPosition(to_add, new Vector2(transform.position.x, transform.position.y));
+        rb.AddForce(to_add);
+        /*transform.position.x, transform.position.y-1,*/
+        //rb.AddForceAtPosition(to_add, new Vector2(ForcePos.transform.position.x, ForcePos.transform.position.x));
         RotateShip();
         Stabilize();
-
-        //foreach (Transform oChild in transform)
-        //{
-        //    if (oChild.name == "gamı")
-        //    {
-        //        oChild.GetComponent<Rigidbody2D>().velocity = GetComponent<Rigidbody2D>().velocity;
-        //    }
-        //}
     }
 }

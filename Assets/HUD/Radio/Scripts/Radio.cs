@@ -5,8 +5,10 @@ using UnityEngine.UI;
 
 public class Radio : MonoBehaviour
 {
+    [SerializeField] private GameObject indicator;
     [SerializeField] private AudioClip[] radioSounds;
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private GameObject[] spawnPoints;
 
     [SerializeField] private AudioClip ropeSound;
 
@@ -20,6 +22,8 @@ public class Radio : MonoBehaviour
     private AttachScript attachScript;
     public bool isAttached = false;
 
+    [SerializeField] private Harbor harborSctript;
+
     AudioClip RandomClip()
     {
         return radioSounds[Random.Range(0, radioSounds.Length)];
@@ -27,10 +31,10 @@ public class Radio : MonoBehaviour
 
     private Vector2 spawnShip() 
     {
-        int x = Random.Range(-2000, 2000);
-        int y = Random.Range(-2000, 2000);
-        Vector2 spawnLocation = new Vector2(x, y);
+        int x = Random.Range(-0, spawnPoints.Length-1);
+        Vector2 spawnLocation = spawnPoints[x].transform.position;
         Instantiate(shipToSpawn, spawnLocation, Quaternion.identity);
+        Instantiate(indicator, spawnLocation, Quaternion.identity);
         rescueShip = GameObject.FindGameObjectWithTag("Rescue");
         attachScript = rescueShip.GetComponentInChildren<AttachScript>();
         triggerCircle = rescueShip.GetComponentInChildren<CircleCollider2D>();
@@ -58,7 +62,6 @@ public class Radio : MonoBehaviour
             audioSource.PlayOneShot(ropeSound, 0.8f);
             rescueShip.GetComponent<WheelJoint2D>().enabled = true;
             rescueShip.GetComponent<WheelJoint2D>().connectedBody = Player.GetComponent<Rigidbody2D>();
-            rescueShip.tag = "Player";
             rescueShip.layer = 9;
             BoxCollider2D[] colliders = Player.GetComponents<BoxCollider2D>();
             foreach (BoxCollider2D collider in colliders)
@@ -71,8 +74,20 @@ public class Radio : MonoBehaviour
 
         else if (isAttached)
         {
-            audioSource.PlayOneShot(RandomClip());
-            StartCoroutine(ShowText("We have already connected, captain!"));
+            if (harborSctript.inHarbor)
+            {
+                audioSource.PlayOneShot(RandomClip());
+                StartCoroutine(ShowText("Thank you for your service!"));
+                Destroy(GameObject.FindGameObjectWithTag("Rescue"));
+                isMissonActive = false;
+                isAttached = false;
+            }
+
+            else
+            {
+                audioSource.PlayOneShot(RandomClip());
+                StartCoroutine(ShowText("We have already connected, captain!"));
+            }
         }
 
         else

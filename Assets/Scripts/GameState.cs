@@ -7,7 +7,8 @@ public class GameState : MonoBehaviour
     [Header("- - - References - - -")]
 
     public GameObject Ship;
-    public TileIceScript IceScript;
+    public GameObject tilemapGameObject;
+
 
     [Header("- - - Variables - - -")]
 
