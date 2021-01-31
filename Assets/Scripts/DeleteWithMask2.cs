@@ -7,7 +7,7 @@ public class DeleteWithMask2 : MonoBehaviour
     [Header("- - - References - - -")]
 
     [SerializeField] GameObject Mask;
-    [SerializeField] GameObject MaskPivot;
+    private GameObject MaskPivot;
 
     [Header("- - - Variables - - -")]
 
@@ -18,6 +18,7 @@ public class DeleteWithMask2 : MonoBehaviour
     void Start()
     {
         delayStart = 0;
+        MaskPivot = gameObject;
     }
 
     // Update is called once per frame
