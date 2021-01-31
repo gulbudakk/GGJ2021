@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class Harbor : MonoBehaviour
 {
-    [SerializeField] float speed;
-    [SerializeField] int health;
+    [SerializeField] Rigidbody2D PlayerRB;
+    [SerializeField] Radio radioScript;
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (speed < 10)
+        if (radioScript.isAttached)
         {
-            health = 3;
-
+            Destroy(GameObject.FindGameObjectWithTag("Rescue"));
+            radioScript.isMissonActive = false;
+            radioScript.isAttached = false;
         }
+        
     }
 }

@@ -109,12 +109,12 @@ public class ShipMovement : MonoBehaviour
         RotateShip();
         Stabilize();
 
-        foreach (Transform oChild in transform)
-        {
-            if (oChild.name == "gamı")
-            {
-                oChild.GetComponent<Rigidbody2D>().velocity = GetComponent<Rigidbody2D>().velocity;
-            }
-        }
+        //foreach (Transform oChild in transform)
+        //{
+        //    if (oChild.name == "gamı")
+        //    {
+        //        oChild.GetComponent<Rigidbody2D>().velocity = GetComponent<Rigidbody2D>().velocity;
+        //    }
+        //}
     }
 }

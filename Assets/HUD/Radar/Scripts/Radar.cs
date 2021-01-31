@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Radar : MonoBehaviour
 {
+    [SerializeField] AudioSource audioSource;
     [SerializeField] private Transform radarPing;
     [SerializeField] private LayerMask radarLayerMask;
     private Transform sweepTransform;
     public float rotationSpeed = 180f;
-    private float radarDistance = 4.5f;
+    private float radarDistance = 20f;
     private List<Collider2D> colliderList;
 
     // Start is called before the first frame update
@@ -47,6 +48,7 @@ public class Radar : MonoBehaviour
                 {
                     //Hit something for the first time
                     colliderList.Add(raycastHit2D.collider);
+                    audioSource.PlayOneShot(audioSource.clip, 0.04f);
                     Instantiate(radarPing, raycastHit2D.point, Quaternion.identity);
                 }
 
